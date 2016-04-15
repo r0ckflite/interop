@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160415202938) do
+ActiveRecord::Schema.define(version: 20160415204802) do
 
   create_table "message", primary_key: "message_id", force: :cascade do |t|
     t.string  "name",                limit: 80,                         null: false
@@ -89,10 +89,12 @@ ActiveRecord::Schema.define(version: 20160415202938) do
     t.datetime "updated_at",                                      null: false
     t.string   "name",                   limit: 255
     t.integer  "role",                   limit: 4
+    t.integer  "vendor_id",              limit: 4
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
+  add_index "users", ["vendor_id"], name: "fk_rails_0d9fb09c73", using: :btree
 
   create_table "vendor", primary_key: "vendor_id", force: :cascade do |t|
     t.string   "name",       limit: 40, null: false
@@ -154,6 +156,7 @@ ActiveRecord::Schema.define(version: 20160415202938) do
   add_foreign_key "test_seq_step", "message", column: "in_message_id", primary_key: "message_id", name: "test_steps_in_message_id"
   add_foreign_key "test_seq_step", "test_seq_step", column: "next_step_id", primary_key: "test_seq_step_id", name: "test_steps_next_step_id"
   add_foreign_key "test_seq_step", "test_sequence", primary_key: "test_sequence_id", name: "test_seq_step_test_seq"
+  add_foreign_key "users", "vendor", primary_key: "vendor_id"
   add_foreign_key "vendor_packages", "package", primary_key: "package_id", name: "vendor_package_package_id"
   add_foreign_key "vendor_packages", "vendor", primary_key: "vendor_id", name: "vendor_package_vendor_id"
   add_foreign_key "vendor_request_message", "message", primary_key: "message_id", name: "vendor_request_message_message_id"
