@@ -1,6 +1,9 @@
 <div class="container">
   <div class="row">
-    <h3>Users</h3>
+      <h3>Users</h3>
+      <%= link_to("Add User", "users/sign_up", :method => :get, :class => 'button-xs') %>
+    </div>
+  <div class="row" id="in_user_table">
     <div class="column">
       <table class="table">
         <tbody>

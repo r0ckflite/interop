@@ -6,4 +6,5 @@ class Vendor < ActiveRecord::Base
     has_many :vendor_request_messages, :class_name => 'VendorRequestMessage', :foreign_key => :vendor_id
     has_many :vendor_seq_step_loggings, :class_name => 'VendorSeqStepLogging', :foreign_key => :vendor_id
     has_many :vendor_test_sequences, :class_name => 'VendorTestSequence', :foreign_key => :vendor_id
+    has_many :users, :class_name => User, :foreign_key => :vendor_id
 end

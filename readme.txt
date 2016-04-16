@@ -159,6 +159,8 @@ mkdir temp_model
 rmre -a mysql2 -d rails-devise-roles_development -u wms -p wms -o temp_model
 cp all files except user to app/model
 
+---
+
 rake db:seed # to create vendors
 
 hand modify (in sqlplus) admin user, giving role of 2 (admin) and vendor_id = 1 (sixthc);

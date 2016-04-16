@@ -2,6 +2,12 @@
 @import "bootstrap-sprockets";
 @import "bootstrap";
 
+
+// interop specific includes, sigh...
+.in_user_table {
+  margin-top: 20px;
+}
+
 // make all images responsive by default
 img {
   @extend .img-responsive;
@@ -79,4 +85,10 @@ section {
   @extend .btn;
   @extend .btn-primary;
   @extend .btn-xs;
+}
+
+.i_nav {
+  color: #9d9d9d;
+  padding-top: 15px;
+  padding-bottom: 15px;
 }
