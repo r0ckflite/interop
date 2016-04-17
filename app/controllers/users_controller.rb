@@ -1,7 +1,9 @@
 class UsersController < ApplicationController
   prepend_before_action :require_no_authentication, only: [:cancel]
-  before_action :authenticate_user!
-  before_action :admin_only, :except => :show
+  prepend_before_action :authenticate_scope!, only: [:edit, :update, :destroy]
+
+  # no registration actions unless you are an admin
+  before_action :admin_only
 
   def index
     puts "--------- index"
@@ -21,8 +23,10 @@ class UsersController < ApplicationController
   end
 
   def edit_user
-    puts "======= edit user"
-    @user = User.find_by_id_and_vendor_id(params[:id], current_user.vendor_id)
+    puts "======= edit user. params #{params[:id]}"
+    @user = User.find(params[:id])
+    puts "user : #{@user.id} , #{@user.name}"
+    puts @user.name
     unless current_user.admin?
       unless @user == current_user
         redirect_to :back, :alert => "Access denied."
@@ -31,6 +35,13 @@ class UsersController < ApplicationController
   end
 
   def new
+    puts "======== new, param = #{params[:id]}"
+    @user = current_user
+    unless current_user.admin?
+      unless @user == current_user
+        redirect_to :back, :alert => "Access denied."
+      end
+    end
   end
 
 
@@ -55,11 +66,23 @@ class UsersController < ApplicationController
   end
 
   def create
-    @user = User.new(user_params)
-    if @user.save
-      redirect_to user_url, notice: "User succesfully created!"
+    puts " ========= create"
+    resource = User.new()
+    resource.name = params[:user][:name]
+    resource.email = params[:user][:email]
+    resource.password = params[:user][:password]
+    resource.password_confirmation = params[:user][:password_confirmation]
+    resource.vendor_id = current_user.vendor_id
+
+    resource.save
+    yield resource if block_given?
+    if resource.persisted?
+      flash[:notice] = "User succesfully signed up"
+      redirect_to "/users"
     else
-      render :new
+      clean_up_passwords resource
+      set_minimum_password_length
+      redirect_to "/users"
     end
   end
 

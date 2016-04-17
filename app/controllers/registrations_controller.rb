@@ -17,7 +17,7 @@ class RegistrationsController < Devise::RegistrationsController
 
 	def create
 		puts " ========= create"
-		build_resource(sign_up_params)
+		build_resource(user_params)
 
 		# creates the user with same vendor id as creator
 		resource.vendor_id = current_user.vendor_id
