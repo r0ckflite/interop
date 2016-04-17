@@ -8,7 +8,9 @@
   <% end %>
 </td>
 <td>
-	<%= link_to("Edit", "/users/new/new_user", :method => :get, :class => 'button-xs') %>
+
+	<%= link_to("Edit", user_path(user) + '/edit_user', :class => 'button-xs') unless user == current_user %>
+
 <td>
   <%= link_to("Delete", user_path(user), :data => { :confirm => "Are you sure?" }, :method => :delete, :class => 'button-xs') unless user == current_user %>
 </td>

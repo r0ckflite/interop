@@ -20,13 +20,23 @@ class UsersController < ApplicationController
     end
   end
 
+  def edit_user
+    puts "======= edit user"
+    @user = User.find_by_id_and_vendor_id(params[:id], current_user.vendor_id)
+    unless current_user.admin?
+      unless @user == current_user
+        redirect_to :back, :alert => "Access denied."
+      end
+    end
+  end
+
   def new
   end
 
 
   def show
-    puts "--------- show"
-    @user = User.find_by_id_and_vendor_id(params[:id], current_user.vendor_id)
+    puts "--------- user show"
+    @user = current_user
     unless current_user.admin?
       unless @user == current_user
         redirect_to :back, :alert => "Access denied."
